@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>pl.edu.agh.mwo.java2</groupId>
-	<artifactId>mwo-invoice-advanced</artifactId>
+	<groupId>pl.edu.agh.mwo.invoice</groupId>
+	<artifactId>mwo-invoice</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>mwo-invoice-advanced</name>
+	<name>mwo-invoice</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
