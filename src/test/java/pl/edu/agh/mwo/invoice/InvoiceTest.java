@@ -40,7 +40,7 @@ public class InvoiceTest {
 	public void testInvoiceHasTheSameSubtotalAndTotalIfTaxIsZero() {
 		Product taxFreeProduct = new TaxFreeProduct("Warzywa", new BigDecimal("199.99"));
 		invoice.addProduct(taxFreeProduct);
-		Assert.assertThat(invoice.getSubtotal(), Matchers.comparesEqualTo(invoice.getSubtotal()));
+		Assert.assertThat(invoice.getTotal(), Matchers.comparesEqualTo(invoice.getSubtotal()));
 	}
 
 	@Test
