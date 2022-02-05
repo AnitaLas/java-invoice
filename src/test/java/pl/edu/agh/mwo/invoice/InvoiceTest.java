@@ -37,6 +37,22 @@ public class InvoiceTest {
     }
 
     @Test
+    public void testInvoiceSubtotalWithTwoDifferentProducts() {
+        Product onions = new TaxFreeProduct("Warzywa", new BigDecimal("10"));
+        Product apples = new TaxFreeProduct("Owoce", new BigDecimal("10"));
+        invoice.addProduct(onions);
+        invoice.addProduct(apples);
+        Assert.assertThat(new BigDecimal("20"), Matchers.comparesEqualTo(invoice.getSubtotal()));
+    }
+
+    @Test
+    public void testInvoiceSubtotalWithManySameProducts() {
+        Product onions = new TaxFreeProduct("Warzywa", new BigDecimal("10"));
+        invoice.addProduct(onions, 100);
+        Assert.assertThat(new BigDecimal("1000"), Matchers.comparesEqualTo(invoice.getSubtotal()));
+    }
+
+    @Test
     public void testInvoiceHasTheSameSubtotalAndTotalIfTaxIsZero() {
         Product taxFreeProduct = new TaxFreeProduct("Warzywa", new BigDecimal("199.99"));
         invoice.addProduct(taxFreeProduct);
