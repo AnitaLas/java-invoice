@@ -38,7 +38,7 @@ public abstract class Product {
         return this.name;
     }
 
-    public BigDecimal getPrice() {
+    public BigDecimal getNetPrice() {
         return this.price;
     }
 
@@ -47,7 +47,7 @@ public abstract class Product {
     }
 
     public BigDecimal getPriceWithTax() {
-        return this.getPrice().add(this.getPrice().multiply(this.getTaxPercent()));
+        return this.getNetPrice().add(this.getNetPrice().multiply(this.getTaxPercent()));
         //return getPrice().add(getPrice().multiply(getTaxPercent())); // jak geter się zmieni to, tu też -OCP
         //return this.price.add(this.taxPercent.multiply(this.price));
     }
