@@ -1,42 +1,43 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-    //private Collection<Product> products = new ArrayList<Product>();
-    private HashMap<String, Integer> productQuantity = new HashMap<>();
+    private HashMap<Product, Integer> productQuantity = new HashMap<>();
 
     public void addProduct(Product product) {
-       //if(this.products == null) {
-           //this.products = new ArrayList<Product>();
-      //}
-        productQuantity.put(product.getName(), 1);
+        this.addProduct(product, 1);
     }
 
     public void addProduct(Product product, Integer quantity) {
-        productQuantity.put(product.getName(), quantity);
-
+        if (product == null || quantity <= 0)
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        productQuantity.put(product, quantity);
     }
 
     public BigDecimal getSubtotal() {
-        //return BigDecimal.ZERO;
         BigDecimal subtotal = BigDecimal.ZERO;
-        for(String produktName : productQuantity.keySet()) {
-           subtotal =subtotal.add();
+        for(Product product : productQuantity.keySet()) {
+           subtotal = subtotal.add(product.getNetPrice().multiply(new BigDecimal(productQuantity.get(product))));
         }
         return subtotal;
     }
 
     public BigDecimal getTax() {
-        return BigDecimal.ZERO;
+        BigDecimal tax = BigDecimal.ZERO;
+        for(Product product : productQuantity.keySet()) {
+            tax = tax.add(product.getNetPrice().multiply(product.getTaxPercent()).multiply(new BigDecimal(productQuantity.get(product))));
+        }
+        return tax;
     }
 
     public BigDecimal getTotal() {
-        return BigDecimal.ZERO;
+        BigDecimal total = BigDecimal.ZERO;
+        for(Product product : productQuantity.keySet()) {
+            total = total.add(product.getPriceWithTax().multiply(new BigDecimal(productQuantity.get(product))));
+        }
+        return total;
     }
 }
