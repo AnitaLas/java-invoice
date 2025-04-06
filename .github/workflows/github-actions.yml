@@ -1,5 +1,5 @@
 name: CI for Java Invoice
-on: [push]
+on: [ push ]
 jobs:
   test:
     name: Unit tests
@@ -13,3 +13,5 @@ jobs:
           distribution: 'adopt'
       - name: Test
         run: mvn test
+      - name: checkstyle
+        run: mvn checkstyle:checkstyle
