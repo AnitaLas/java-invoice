@@ -41,4 +41,8 @@ public class Invoice {
         }
         return totalGross;
     }
+
+    public void test(){
+
+    }
 }
