@@ -142,8 +142,8 @@ public class InvoiceTest {
     @Test
     public void testInvoicePrintProductInOneLine() {
         invoice.addProduct(new TaxFreeProduct("Chlebek", new BigDecimal("10")));
-        System.out.println(invoice.getProductsList());
-        String expectedOutput = "Name: Chlebek, price: 10, quantity: 1\n"
+        System.out.println(invoice.getProductListWithDuplicates());
+        String expectedOutput = "Name: Chlebek, value: 10, quantity: 1\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
@@ -158,11 +158,10 @@ public class InvoiceTest {
         invoice.addProduct(p1, 3);
         invoice.addProduct(p2);
         invoice.addProduct(p3);
-//        System.out.println(invoice.getProductsList() + System.lineSeparator());
-        System.out.println(invoice.getProductsList());
-        String expectedOutput = "Name: Chedar, price: 10, quantity: 3\n"
-                + "Name: Masełko, price: 200, quantity: 1\n"
-                + "Name: Chlebek, price: 200, quantity: 1\n"
+        System.out.println(invoice.getProductListWithDuplicates());
+        String expectedOutput = "Name: Chedar, value: 30, quantity: 3\n"
+                + "Name: Masełko, value: 200, quantity: 1\n"
+                + "Name: Chlebek, value: 200, quantity: 1\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
@@ -172,10 +171,10 @@ public class InvoiceTest {
         invoice.addProduct(p1, 3);
         invoice.addProduct(p2);
         invoice.addProduct(p3);
-        System.out.println(invoice.getSortedProductsList());
-        String expectedOutput = "Name: Chedar, price: 10, quantity: 3\n"
-                + "Name: Chlebek, price: 200, quantity: 1\n"
-                + "Name: Masełko, price: 200, quantity: 1\n"
+        System.out.println(invoice.getSortedProductsListWithDuplicates());
+        String expectedOutput = "Name: Chedar, value: 30, quantity: 3\n"
+                + "Name: Chlebek, value: 200, quantity: 1\n"
+                + "Name: Masełko, value: 200, quantity: 1\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
@@ -189,24 +188,24 @@ public class InvoiceTest {
 
     @Test
     public void testInvoiceHasNumberAndOneProduct() {
-        invoice.addProduct(p1, 3);
-        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductsList());
+        invoice.addProduct(p1, 4);
+        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductListWithDuplicates());
         String expectedOutput = "FS/20250429/1"
                 + System.lineSeparator() +
-                "Name: Chedar, price: 10, quantity: 3\n"
+                "Name: Chedar, value: 40, quantity: 4\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, (outputStream.toString()));
     }
 
     @Test
     public void testInvoiceHasNumberAndProducts() {
-        invoice.addProduct(p1, 3);
+        invoice.addProduct(p1, 10);
         invoice.addProduct(p2);
-        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductsList());
+        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductListWithDuplicates());
         String expectedOutput = "FS/20250429/1"
                 + System.lineSeparator() +
-                "Name: Chedar, price: 10, quantity: 3\n"
-                + "Name: Masełko, price: 200, quantity: 1\n"
+                "Name: Chedar, value: 100, quantity: 10\n"
+                + "Name: Masełko, value: 200, quantity: 1\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, (outputStream.toString()));
     }
@@ -214,7 +213,7 @@ public class InvoiceTest {
     @Test
     public void testInvoiceGetProductNumber() {
         invoice.addProduct(p1, 3);
-        System.out.println(invoice.getProductsSumNumber());
+        System.out.println(invoice.getProductsSumNumberWithDuplicates());
         String expectedOutput = "Liczba pozycji: 1" + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
@@ -223,39 +222,38 @@ public class InvoiceTest {
     public void testInvoiceGetProductNumberForTwoProducts() {
         invoice.addProduct(p1, 3);
         invoice.addProduct(p2, 1);
-        System.out.println(invoice.getProductsSumNumber());
+        System.out.println(invoice.getProductsSumNumberWithDuplicates());
         String expectedOutput = "Liczba pozycji: 2" + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
 
     @Test
     public void testInvoiceHasNumberAndProductsAndProductsSum() {
-        invoice.addProduct(p1, 3);
+        invoice.addProduct(p1, 2);
         invoice.addProduct(p2);
         System.out.println(invoice.getInvoiceNumber()
-                + System.lineSeparator() + invoice.getProductsList()
-                + invoice.getProductsSumNumber());
+                + System.lineSeparator() + invoice.getProductListWithDuplicates()
+                + invoice.getProductsSumNumberWithDuplicates());
         String expectedOutput = "FS/20250429/1"
                 + System.lineSeparator() +
-                "Name: Chedar, price: 10, quantity: 3\n"
-                + "Name: Masełko, price: 200, quantity: 1\n"
+                "Name: Chedar, value: 20, quantity: 2\n"
+                + "Name: Masełko, value: 200, quantity: 1\n"
                 + "Liczba pozycji: 2"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, (outputStream.toString()));
     }
 
     @Test
-
     public void testInvoiceHasDuplicateProducts() {
 //        invoice.addProduct(p1, 3);
 //        invoice.addProduct(p1a, 10);
-//        // hmmm
+//
 //        System.out.println(invoice.getInvoiceNumber()
-//                + System.lineSeparator() + invoice.getProductsList()
-//                + invoice.getProductsSumNumber());
+//                + System.lineSeparator() + invoice.getProductsListWithoutDuplicates()
+//                + invoice.getProductsSumNumberWithoutDuplicates());
 //        String expectedOutput = "FS/20250429/1"
 //                + System.lineSeparator()
-//                + "Name: Chedar, price: 20, quantity: 13\n"
+//                + "Name: Chedar, value: 130, quantity: 13\n"
 //                + "Liczba pozycji: 1"
 //                + System.lineSeparator();
 //        Assert.assertEquals(expectedOutput, (outputStream.toString()));
