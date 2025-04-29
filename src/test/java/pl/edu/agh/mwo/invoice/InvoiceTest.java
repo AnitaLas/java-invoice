@@ -143,7 +143,7 @@ public class InvoiceTest {
     public void testInvoicePrintProductInOneLine() {
         invoice.addProduct(new TaxFreeProduct("Chlebek", new BigDecimal("10")));
         System.out.println(invoice.getProductsList());
-        String expectedOutput = "Name: Chlebek, price: 10, quantity: 1"
+        String expectedOutput = "Name: Chlebek, price: 10, quantity: 1\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
@@ -245,6 +245,7 @@ public class InvoiceTest {
     }
 
     @Test
+
     public void testInvoiceHasDuplicateProducts() {
 //        invoice.addProduct(p1, 3);
 //        invoice.addProduct(p1a, 10);
