@@ -1,13 +1,15 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
     private Map<Product, Integer> products = new HashMap<Product, Integer>();
+    private List<String> productsList = new LinkedList();
+    private String invoiceNumber = "FS/20250429/1";
+    private int productsSum;
 
     public void addProduct(Product product) {
         addProduct(product, 1);
@@ -42,7 +44,54 @@ public class Invoice {
         return totalGross;
     }
 
-    public void test(){
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
 
+    public List<String> setBaseProductsList() {
+        String line = "";
+
+        for (Product product : products.keySet()) {
+            line += "Name: " + product.getName() + ", ";
+            line += "price: " + product.getPrice() + ", ";
+            line += "quantity: " + products.get(product);
+            line += "\n";
+            productsList.add(line);
+            line = "";
+        }
+        return productsList;
+    }
+
+    public int setProductLinesNumbers() {
+//        int quantity = 0;
+//
+//        for (Integer number : products.values()) {
+//            quantity +=  number;
+
+        productsSum = products.size();
+        return productsSum;
+    }
+
+    public String getProductsSumNumber() {
+        return "Liczba pozycji: "+ setProductLinesNumbers();
+    }
+
+    public String getProductListAsString() {
+        String text = "";
+        for (String productInfo : productsList) {
+            text += productInfo;
+        }
+        return text;
+    }
+
+    public String getProductsList() {
+        productsList = setBaseProductsList();
+        return getProductListAsString();
+    }
+
+    public String getSortedProductsList() {
+        productsList = setBaseProductsList();
+        Collections.sort(productsList);
+        return getProductListAsString();
     }
 }
