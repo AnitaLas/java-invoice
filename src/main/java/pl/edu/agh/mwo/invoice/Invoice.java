@@ -6,7 +6,8 @@ import java.util.*;
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-    private Map<Product, Integer> products = new HashMap<Product, Integer>();
+
+    private Map<Product, Integer> products = new LinkedHashMap<Product, Integer>();
     private List<String> productsList = new LinkedList();
     private String invoiceNumber = "FS/20250429/1";
     private int productsSum;
@@ -20,6 +21,7 @@ public class Invoice {
             throw new IllegalArgumentException();
         }
         products.put(product, quantity);
+
     }
 
     public BigDecimal getNetTotal() {
@@ -94,4 +96,6 @@ public class Invoice {
         Collections.sort(productsList);
         return getProductListAsString();
     }
+
+
 }
