@@ -15,7 +15,7 @@ import pl.edu.agh.mwo.invoice.product.OtherProduct;
 import pl.edu.agh.mwo.invoice.product.Product;
 import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
 
-public class InvoiceTest {
+public class InvoiceTest  {
     private Invoice invoice;
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
@@ -140,44 +140,92 @@ public class InvoiceTest {
 //    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
     @Test
-    public void testInvoicePrintProductInOneLine() {
+    public void testInvoiceWithDuplicateElementsGrossPriceProductsGetProductList() {
         invoice.addProduct(new TaxFreeProduct("Chlebek", new BigDecimal("10")));
-        System.out.println(invoice.getProductListWithDuplicates());
-        String expectedOutput = "Name: Chlebek, value: 10, quantity: 1\n"
-                + System.lineSeparator();
-        Assert.assertEquals(expectedOutput, outputStream.toString());
-    }
-
-    private Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
-    private Product p1a = new TaxFreeProduct("Chedar", new BigDecimal("10"));
-    private Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
-    private Product p3 = new TaxFreeProduct("Chlebek", new BigDecimal("200"));
-
-    @Test
-    public void testInvoicePrintProductsInSeparateLine() {
-        invoice.addProduct(p1, 3);
-        invoice.addProduct(p2);
-        invoice.addProduct(p3);
-        System.out.println(invoice.getProductListWithDuplicates());
-        String expectedOutput = "Name: Chedar, value: 30, quantity: 3\n"
-                + "Name: Masełko, value: 200, quantity: 1\n"
-                + "Name: Chlebek, value: 200, quantity: 1\n"
+        System.out.println(invoice.getProductsListWithDuplicatesElementsGrossPrice());
+        String expectedOutput = "Name: Chlebek, price: 10, quantity: 1\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
 
     @Test
-    public void testInvoiceHasSortedProductsByProductName() {
-        invoice.addProduct(p1, 3);
-        invoice.addProduct(p2);
-        invoice.addProduct(p3);
-        System.out.println(invoice.getSortedProductsListWithDuplicates());
-        String expectedOutput = "Name: Chedar, value: 30, quantity: 3\n"
-                + "Name: Chlebek, value: 200, quantity: 1\n"
-                + "Name: Masełko, value: 200, quantity: 1\n"
+    public void testInvoiceWithoutDuplicateElementsGrossPriceProductsGetProductList() {
+        invoice.addProduct(new TaxFreeProduct("Chlebek", new BigDecimal("10")));
+        System.out.println(invoice.getProductsListWithoutDuplicateElementsGrossPrice());
+        String expectedOutput = "Name: Chlebek, price: 10, quantity: 1\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
+
+
+    @Test
+    public void testInvoiceWithDuplicateElementsGrossPriceProductsInSeparateLine() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
+        Product p3 = new TaxFreeProduct("Chlebek", new BigDecimal("200"));
+        invoice.addProduct(p1, 3);
+        invoice.addProduct(p2);
+        invoice.addProduct(p3);
+        System.out.println(invoice.getProductsListWithDuplicatesElementsGrossPrice());
+        String expectedOutput = "Name: Chedar, price: 30, quantity: 3\n"
+                + "Name: Masełko, price: 200, quantity: 1\n"
+                + "Name: Chlebek, price: 200, quantity: 1\n"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+    @Test
+    public void testInvoiceWithoutDuplicateElementsGrossPriceProductsInSeparateLine() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
+        Product p3 = new TaxFreeProduct("Chlebek", new BigDecimal("200"));
+        invoice.addProduct(p1, 3);
+        invoice.addProduct(p2);
+        invoice.addProduct(p3);
+        System.out.println(invoice.getProductsListWithoutDuplicateElementsGrossPrice());
+        String expectedOutput = "Name: Chedar, price: 30, quantity: 3\n"
+                + "Name: Masełko, price: 200, quantity: 1\n"
+                + "Name: Chlebek, price: 200, quantity: 1\n"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+
+
+
+    @Test
+    public void testInvoiceWithDuplicateElementsGrossPriceProductsSortedProductsByProductName() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
+        Product p3 = new TaxFreeProduct("Chlebek", new BigDecimal("200"));
+        invoice.addProduct(p1, 3);
+        invoice.addProduct(p2);
+        invoice.addProduct(p3);
+        System.out.println(invoice.getProductsListWithDuplicatesElementsGrossPrice());
+        String expectedOutput = "Name: Chedar, price: 30, quantity: 3\n"
+                + "Name: Masełko, price: 200, quantity: 1\n"
+                + "Name: Chlebek, price: 200, quantity: 1\n"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+    @Test
+    public void testInvoiceWithoutDuplicateElementsGrossPriceProductsSortedProductsByProductName() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
+        Product p3 = new TaxFreeProduct("Chlebek", new BigDecimal("200"));
+        invoice.addProduct(p1, 3);
+        invoice.addProduct(p2);
+        invoice.addProduct(p3);
+        System.out.println(invoice.getProductsListWithoutDuplicateElementsGrossPrice());
+        String expectedOutput = "Name: Chedar, price: 30, quantity: 3\n"
+                + "Name: Masełko, price: 200, quantity: 1\n"
+                + "Name: Chlebek, price: 200, quantity: 1\n"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+
 
     @Test
     public void testInvoiceGetInvoiceNumber() {
@@ -186,78 +234,437 @@ public class InvoiceTest {
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
 
+
+
     @Test
-    public void testInvoiceHasNumberAndOneProduct() {
+    public void testInvoiceWithoutDuplicateElementsGrossPriceProductsNumberPlusProduct() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
         invoice.addProduct(p1, 4);
-        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductListWithDuplicates());
+        System.out.println(invoice.getInvoiceNumber()
+                + System.lineSeparator()
+                + invoice.getProductsListWithDuplicatesElementsGrossPrice());
         String expectedOutput = "FS/20250429/1"
                 + System.lineSeparator() +
-                "Name: Chedar, value: 40, quantity: 4\n"
+                "Name: Chedar, price: 40, quantity: 4\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, (outputStream.toString()));
     }
 
     @Test
-    public void testInvoiceHasNumberAndProducts() {
+    public void testInvoiceWithDuplicateElementsGrossPriceProductsNumberPlusProduct() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+        invoice.addProduct(p1, 4);
+        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductsListWithoutDuplicateElementsGrossPrice());
+        String expectedOutput = "FS/20250429/1"
+                + System.lineSeparator()
+                + "Name: Chedar, price: 40, quantity: 4\n"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, (outputStream.toString()));
+    }
+
+
+    @Test
+    public void testInvoiceWithDuplicateElementsGrossPriceProductsNumberPlusProducts() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
         invoice.addProduct(p1, 10);
         invoice.addProduct(p2);
-        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductListWithDuplicates());
+        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductsListWithDuplicatesElementsGrossPrice());
         String expectedOutput = "FS/20250429/1"
-                + System.lineSeparator() +
-                "Name: Chedar, value: 100, quantity: 10\n"
-                + "Name: Masełko, value: 200, quantity: 1\n"
+                + System.lineSeparator()
+                + "Name: Chedar, price: 100, quantity: 10\n"
+                + "Name: Masełko, price: 200, quantity: 1\n"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, (outputStream.toString()));
     }
 
     @Test
-    public void testInvoiceGetProductNumber() {
+    public void testInvoiceWithoutDuplicateElementsGrossPriceProductsNumberPlusProducts() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
+        invoice.addProduct(p1, 10);
+        invoice.addProduct(p2);
+        System.out.println(invoice.getInvoiceNumber() + System.lineSeparator() + invoice.getProductsListWithoutDuplicateElementsGrossPrice());
+        String expectedOutput = "FS/20250429/1"
+                + System.lineSeparator()
+                + "Name: Chedar, price: 100, quantity: 10\n"
+                + "Name: Masełko, price: 200, quantity: 1\n"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, (outputStream.toString()));
+    }
+
+
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesGetSumOfLineElementsOneProduct() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
         invoice.addProduct(p1, 3);
-        System.out.println(invoice.getProductsSumNumberWithDuplicates());
+        System.out.println(invoice.getPrintTextProductsSumNumber() + invoice.getProductsSumNumberWithDuplicates());
         String expectedOutput = "Liczba pozycji: 1" + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
 
     @Test
-    public void testInvoiceGetProductNumberForTwoProducts() {
+    public void testInvoiceWithoutDuplicatesGetSumOfLineElementsOneProduct() {
+        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
         invoice.addProduct(p1, 3);
-        invoice.addProduct(p2, 1);
-        System.out.println(invoice.getProductsSumNumberWithDuplicates());
+        System.out.println(invoice.getPrintTextProductsSumNumber() + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "Liczba pozycji: 1" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesGetSumOfLineElementsTwoDifferentProducts() {
+        Product p1 = new DairyProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new DairyProduct("Masełko", new BigDecimal("200"));
+        invoice.addProduct(p1);
+        invoice.addProduct(p2);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithDuplicates());
         String expectedOutput = "Liczba pozycji: 2" + System.lineSeparator();
         Assert.assertEquals(expectedOutput, outputStream.toString());
     }
 
     @Test
-    public void testInvoiceHasNumberAndProductsAndProductsSum() {
+    public void testInvoiceWithoutDuplicatesGetSumOfLineElementsTwoDifferentProducts() {
+        Product p1 = new DairyProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new DairyProduct("Masełko", new BigDecimal("200"));
+        invoice.addProduct(p1);
+        invoice.addProduct(p2);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "Liczba pozycji: 2" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesGetSumOfLineElementsTwoIdenticalProducts() {
+        Product p1 = new DairyProduct("Chedar", new BigDecimal("10"));
+        Product p1a = new DairyProduct("Chedar", new BigDecimal("10"));
+        invoice.addProduct(p1);
+        invoice.addProduct(p1a);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithDuplicates());
+        String expectedOutput = "Liczba pozycji: 2" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+    @Test
+    public void testInvoiceWithoutDuplicatesGetSumOfLineElementsTwoIdenticalProducts() {
+        Product p1 = new DairyProduct("Chedar", new BigDecimal("10"));
+        Product p1a = new DairyProduct("Chedar", new BigDecimal("10"));
+        invoice.addProduct(p1);
+        invoice.addProduct(p1a);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "Liczba pozycji: 1" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesGetSumOfLineElementsTwoIdenticalProductsPlusOneDifferentProduct() {
+        Product p1 = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1a = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1b = new DairyProduct("Masełko", new BigDecimal("10"));
+        invoice.addProduct(p1,2);
+        invoice.addProduct(p1a);
+        invoice.addProduct(p1b,3);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithDuplicates());
+        String expectedOutput = "Liczba pozycji: 3" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+    
+    @Test
+    public void testInvoiceWithoutDuplicatesGetSumOfLineElementsTwoIdenticalProductsPlusOneDifferentProduct() {
+        Product p1 = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1a = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1b = new DairyProduct("Masełko", new BigDecimal("10"));
+        invoice.addProduct(p1,2);
+        invoice.addProduct(p1a);
+        invoice.addProduct(p1b,3);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "Liczba pozycji: 2" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesGetSumOfLineElementsTwoIdenticalProductsPlusOneDifferentProductAddedAlternately() {
+        Product p1 = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p1b = new DairyProduct("towar", new BigDecimal("10"));
+        invoice.addProduct(p1,2);
+        invoice.addProduct(p1a);
+        invoice.addProduct(p1b,3);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithDuplicates());
+        String expectedOutput = "Liczba pozycji: 3" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+    @Test
+    public void testInvoiceWithoutDuplicatesGetSumOfLineElementsTwoIdenticalProductsPlusOneDifferentProductAddedAlternately() {
+        Product p1 = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p1b = new DairyProduct("towar", new BigDecimal("10"));
+        invoice.addProduct(p1,2);
+        invoice.addProduct(p1a);
+        invoice.addProduct(p1b,3);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "Liczba pozycji: 2" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesGetSumOfLineElementsTwoIdenticalProductsPlusTwoDifferentProductAddedAlternately() {
+        Product p1 = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p1b = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1c = new DairyProduct("Masełko", new BigDecimal("10"));
+        invoice.addProduct(p1,2);
+        invoice.addProduct(p1a);
+        invoice.addProduct(p1b,3);
+        invoice.addProduct(p1c,4);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithDuplicates());
+        String expectedOutput = "Liczba pozycji: 4" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+    @Test
+    public void testInvoiceWithoutDuplicatesGetSumOfLineElementsTwoIdenticalProductsPlusTwoDifferentProductAddedAlternately() {
+        Product p1 = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p1b = new DairyProduct("towar", new BigDecimal("10"));
+        Product p1c = new DairyProduct("Masełko", new BigDecimal("10"));
+        invoice.addProduct(p1,2);
+        invoice.addProduct(p1a);
+        invoice.addProduct(p1b,3);
+        invoice.addProduct(p1c,4);
+        System.out.println(invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "Liczba pozycji: 2" + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, outputStream.toString());
+    }
+
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesElementsGrossPriceTwoDifferentProducts() {
+        Product p1 = new DairyProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new DairyProduct("Masełko", new BigDecimal("200"));
         invoice.addProduct(p1, 2);
         invoice.addProduct(p2);
         System.out.println(invoice.getInvoiceNumber()
-                + System.lineSeparator() + invoice.getProductListWithDuplicates()
+                + System.lineSeparator()
+                + invoice.getProductsListWithDuplicatesElementsGrossPrice()
+                + invoice.getPrintTextProductsSumNumber()
                 + invoice.getProductsSumNumberWithDuplicates());
         String expectedOutput = "FS/20250429/1"
-                + System.lineSeparator() +
-                "Name: Chedar, value: 20, quantity: 2\n"
-                + "Name: Masełko, value: 200, quantity: 1\n"
+                + System.lineSeparator()
+                + "Name: Chedar, price: 21.60, quantity: 2\n"
+                + "Name: Masełko, price: 216.00, quantity: 1\n"
                 + "Liczba pozycji: 2"
                 + System.lineSeparator();
         Assert.assertEquals(expectedOutput, (outputStream.toString()));
     }
 
     @Test
-    public void testInvoiceHasDuplicateProducts() {
-//        invoice.addProduct(p1, 3);
-//        invoice.addProduct(p1a, 10);
-//
-//        System.out.println(invoice.getInvoiceNumber()
-//                + System.lineSeparator() + invoice.getProductsListWithoutDuplicates()
-//                + invoice.getProductsSumNumberWithoutDuplicates());
-//        String expectedOutput = "FS/20250429/1"
-//                + System.lineSeparator()
-//                + "Name: Chedar, value: 130, quantity: 13\n"
-//                + "Liczba pozycji: 1"
-//                + System.lineSeparator();
-//        Assert.assertEquals(expectedOutput, (outputStream.toString()));
+    public void testInvoiceWithoutDuplicatesElementsGrossPriceTwoDifferentProducts() {
+        Product p1 = new DairyProduct("Chedar", new BigDecimal("10"));
+        Product p2 = new DairyProduct("Masełko", new BigDecimal("200"));
+        invoice.addProduct(p1, 2);
+        invoice.addProduct(p2);
+        System.out.println(invoice.getInvoiceNumber()
+                + System.lineSeparator()
+                + invoice.getProductsListWithoutDuplicateElementsGrossPrice()
+                + invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "FS/20250429/1"
+                + System.lineSeparator()
+                + "Name: Chedar, price: 21.60, quantity: 2\n"
+                + "Name: Masełko, price: 216.00, quantity: 1\n"
+                + "Liczba pozycji: 2"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, (outputStream.toString()));
     }
+
+
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesElementsGrossPriceTwoIdenticalProducts() {
+        Product p1 = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p1b = new DairyProduct("Masełko", new BigDecimal("10"));
+        invoice.addProduct(p1);
+        invoice.addProduct(p1a);
+        invoice.addProduct(p1b);
+
+        System.out.println(invoice.getInvoiceNumber()
+                + System.lineSeparator()
+                + invoice.getProductsListWithDuplicatesElementsGrossPrice()
+                + invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithDuplicates());
+        String expectedOutput = "FS/20250429/1"
+                + System.lineSeparator()
+                + "Name: Masełko, price: 10.80, quantity: 1\n"
+                + "Name: Masełko, price: 10.80, quantity: 1\n"
+                + "Name: Masełko, price: 10.80, quantity: 1\n"
+                + "Liczba pozycji: 3"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, (outputStream.toString()));
+    }
+
+
+    @Test // nii work
+    public void testInvoiceWithoutDuplicatesElementsGrossPriceTwoIdenticalProducts() {
+        Product p1 = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p1b = new DairyProduct("Masełko", new BigDecimal("10"));
+        invoice.addProduct(p1);
+        invoice.addProduct(p1a);
+        invoice.addProduct(p1b);
+
+        System.out.println(invoice.getInvoiceNumber()
+                + System.lineSeparator()
+                + invoice.getProductsListWithoutDuplicateElementsGrossPrice()
+                + invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "FS/20250429/1"
+                + System.lineSeparator()
+                + "Name: Masełko, price: 32.40, quantity: 3\n"
+                + "Liczba pozycji: 1"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, (outputStream.toString()));
+    }
+
+
+
+
+
+    @Test
+    public void testInvoiceWithDuplicatesElementsGrossPriceTwoIdenticalProducts2() {
+        Product p1 = new DairyProduct("Masełko", new BigDecimal("20"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        invoice.addProduct(p1, 3);
+        invoice.addProduct(p1a, 10);
+
+        System.out.println(invoice.getInvoiceNumber()
+                + System.lineSeparator()
+                + invoice.getProductsListWithDuplicatesElementsGrossPrice()
+                + invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithDuplicates());
+        String expectedOutput = "FS/20250429/1"
+                + System.lineSeparator()
+                + "Name: Masełko, price: 64.80, quantity: 3\n"
+                + "Name: Masełko, price: 108.00, quantity: 10\n"
+                + "Liczba pozycji: 2"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, (outputStream.toString()));
+    }
+
+    @Test
+    public void testInvoiceWithoutDuplicatesElementsGrossPriceTwoIdenticalProducts2() {
+        Product p1 = new DairyProduct("Masełko", new BigDecimal("20"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        invoice.addProduct(p1, 3);
+        invoice.addProduct(p1a, 10);
+
+        System.out.println(invoice.getInvoiceNumber()
+                + System.lineSeparator()
+                + invoice.getProductsListWithoutDuplicateElementsGrossPrice()
+                + invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "FS/20250429/1"
+                + System.lineSeparator()
+                + "Name: Masełko, price: 172.80, quantity: 13\n"
+                + "Liczba pozycji: 1"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, (outputStream.toString()));
+    }
+
+
+
+
+
+
+    @Test
+    public void testInvoiceHasDuplicateProducts2() {
+        Product p1 = new DairyProduct("Masełko", new BigDecimal("20"));
+        Product p1a = new DairyProduct("Masełko", new BigDecimal("10"));
+        Product p2 = new DairyProduct("Chleb", new BigDecimal("100"));
+        Product p2a = new DairyProduct("Masełko", new BigDecimal("4"));
+        invoice.addProduct(p1, 3);
+        invoice.addProduct(p1a, 10);
+        invoice.addProduct(p2);
+        invoice.addProduct(p2a, 2);
+
+        System.out.println(invoice.getInvoiceNumber()
+                + System.lineSeparator()
+                + invoice.getProductsListWithoutDuplicateElementsGrossPrice()
+                + invoice.getPrintTextProductsSumNumber()
+                + invoice.getProductsSumNumberWithoutDuplicates());
+        String expectedOutput = "FS/20250429/1"
+                + System.lineSeparator()
+                + "Name: Masełko, price: 181.44, quantity: 15\n"
+                + "Name: Chleb, price: 108.00, quantity: 1\n"
+                + "Liczba pozycji: 2"
+                + System.lineSeparator();
+        Assert.assertEquals(expectedOutput, (outputStream.toString()));
+    }
+
+
+    //    @Test // method sorted
+//    public void testInvoiceWithDuplicateElementsSortedProductsSortedProductsByProductName() {
+//        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+//        Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
+//        Product p3 = new TaxFreeProduct("Chlebek", new BigDecimal("200"));
+//        invoice.addProduct(p1, 3);
+//        invoice.addProduct(p2);
+//        invoice.addProduct(p3);
+//        System.out.println(invoice.getProductsListWithDuplicates());
+//        String expectedOutput = "Name: Chedar, price: 30, quantity: 3\n"
+//                + "Name: Chlebek, price: 200, quantity: 1\n"
+//                + "Name: Masełko, price: 200, quantity: 1\n"
+//                + System.lineSeparator();
+//        Assert.assertEquals(expectedOutput, outputStream.toString());
+//    }
+//
+//    @Test
+//    public void testInvoiceWithoutDuplicateElementsSortedProductsSortedProductsByProductName() {
+//        Product p1 = new TaxFreeProduct("Chedar", new BigDecimal("10"));
+//        Product p2 = new TaxFreeProduct("Masełko", new BigDecimal("200"));
+//        Product p3 = new TaxFreeProduct("Chlebek", new BigDecimal("200"));
+//        invoice.addProduct(p1, 3);
+//        invoice.addProduct(p2);
+//        invoice.addProduct(p3);
+//        System.out.println(invoice.getProductsListWithoutDuplicates());
+//        String expectedOutput = "Name: Chedar, price: 30, quantity: 3\n"
+//                + "Name: Chlebek, price: 200, quantity: 1\n"
+//                + "Name: Masełko, price: 200, quantity: 1\n"
+//                + System.lineSeparator();
+//        Assert.assertEquals(expectedOutput, outputStream.toString());
+//    }
 
 
 }

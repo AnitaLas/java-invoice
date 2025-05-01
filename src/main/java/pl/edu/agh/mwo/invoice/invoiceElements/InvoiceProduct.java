@@ -9,6 +9,7 @@ public class InvoiceProduct {
     private Product product;
     private Integer quantity;
     private BigDecimal netValue;
+    private BigDecimal VATValue;
     private BigDecimal grossValue;
 
     public InvoiceProduct(Product product, Integer quantity) {
@@ -54,7 +55,9 @@ public class InvoiceProduct {
         return product;
     }
 
-
+public InvoiceProduct cloneInvoiceProduct() throws CloneNotSupportedException {
+        return (InvoiceProduct) super.clone();
+}
 
 
 
